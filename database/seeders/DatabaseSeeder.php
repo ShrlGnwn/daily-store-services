@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CategorySeeder::class,   // contoh CRUD lengkap: 12 kategori (/api/categories)
+            ProductSeeder::class, // TODO (PKL): seed produk dari FE dummy (TUGAS #2)
             AdminSeeder::class,      // user dashboard: admin@demo.com & customer@demo.com (kolom access)
-            // ProductSeeder::class, // TODO (PKL): seed produk dari FE dummy (TUGAS #2)
             // UserSeeder::class,    // TODO (PKL): user demo demo@demo.com / password (TUGAS #5)
         ]);
     }
