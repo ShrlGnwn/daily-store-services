@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,13 +15,8 @@ Route::get('/ping', function () {
 
 // Produk — bentuk data: FE src/features/catalog/data/products.js
 // Filter: ?category= ?popular=1 ?search= ?limit=
-Route::get('/products', function () {
-    return 'TODO: list produk (PLAN.md Fase BF1)';
-});
-
-Route::get('/products/{slug}', function (string $slug) {
-    return "TODO: detail produk slug={$slug}";
-});
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{slug}', [ProductController::class, 'show']);
 
 // Contoh CRUD (ikutin polanya buat resource lain)
 Route::apiResource('categories', CategoryController::class);
