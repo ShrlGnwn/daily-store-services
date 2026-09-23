@@ -13,7 +13,9 @@ class ProductController extends Controller
     {
         $query = Product::query();
         if ($request->has('category') && $request->category != '') {
-            $query->where('category_slug', $request->category);
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
         }
         if ($request->has('popular')) {
             $isPopular = filter_var($request->popular, FILTER_VALIDATE_BOOLEAN);

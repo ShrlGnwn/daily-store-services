@@ -23,6 +23,7 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'icon' => $this->icon,
+            'products_count' => $this->whenCounted('products'),
         ];
     }
 }
