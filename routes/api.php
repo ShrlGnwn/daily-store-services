@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CollectionPromoController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,9 @@ Route::get('/ping', function () {
 // Filter: ?category= ?popular=1 ?search= ?limit=
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{slug}', [ProductController::class, 'show']);
+
+Route::get('/collections/{key}/products', [CollectionPromoController::class, 'getCollectionProducts']);
+Route::get('/promos/{slug}/products', [CollectionPromoController::class, 'getPromoProducts']);
 
 // Contoh CRUD (ikutin polanya buat resource lain)
 Route::apiResource('categories', CategoryController::class);
