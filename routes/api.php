@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollectionPromoController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -26,12 +27,13 @@ Route::get('/promos/{slug}/products', [CollectionPromoController::class, 'getPro
 Route::apiResource('categories', CategoryController::class);
 
 // Auth — nanti Sanctum (PLAN.md Fase BF3)
-Route::post('/auth/login', function () {
-    return 'TODO: {email, password} → {token, user}';
-});
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+    
 
-Route::get('/me', function () {
-    return 'TODO: user login (auth:sanctum)';
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 });
 
 // Order — FE checkout: src/features/checkout/services/checkoutApi.js
