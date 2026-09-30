@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollectionPromoController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // Prefix otomatis /api. Checklist lengkap di PLAN.md.
@@ -34,13 +35,10 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
-});
-
 // Order — FE checkout: src/features/checkout/services/checkoutApi.js
-Route::post('/orders', function () {
-    return 'TODO: create order (hitung ulang harga di server)';
-});
 
-Route::get('/orders', function () {
-    return 'TODO: list order user login';
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{id}', [OrderController::class, 'show']);
+Route::post('/orders', [OrderController::class, 'store']);
 });
