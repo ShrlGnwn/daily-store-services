@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\View\View;
 
 /**
@@ -16,7 +18,10 @@ class DashboardController extends Controller
     /** Halaman awal dashboard: ringkasan. */
     public function index(): View
     {
-        return view('dashboard.index');
+        $totalOrders = Order::count();
+        $totalCustomers = User::where('access', 'customer')->count();
+        $totalRevenue = Order::whereIn('status', ['completed', 'success'])->sum('total_price');
+        return view('dashboard.index', compact('totalOrders', 'totalCustomers', 'totalRevenue'));
     }
 
     /** Contoh halaman kosong: List Order. */
