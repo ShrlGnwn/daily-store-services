@@ -25,6 +25,8 @@ class User extends Authenticatable
         'password',
         // 'admin' = boleh login dashboard web; 'customer' = user belanja (API)
         'access',
+        'saldo',
+        'astro_coin',
     ];
 
     /**
@@ -48,5 +50,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }
