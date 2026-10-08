@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Dashboard\CategoryController as DashboardCategoryController;
+use App\Http\Controllers\Dashboard\OrderController as DashboardOrderController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,8 @@ Route::redirect('/', '/dashboard/index');
 Route::middleware(['auth', 'admin'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::redirect('/', '/dashboard/index');
     Route::get('/index', [DashboardController::class, 'index'])->name('home');
-    Route::get('/orders', [DashboardController::class, 'orders'])->name('orders');
+    Route::get('/orders', [DashboardOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/data', [DashboardOrderController::class, 'data'])->name('orders.data');
 
     // Contoh CRUD (AJAX)
     Route::get('/categories', [DashboardCategoryController::class, 'index'])->name('categories');

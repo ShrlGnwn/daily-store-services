@@ -14,7 +14,7 @@
         <div class="brand">ASTRO <span>Admin</span></div>
         <nav>
             <a href="{{ route('dashboard.home') }}" class="{{ request()->routeIs('dashboard.home') ? 'active' : '' }}">Dashboard</a>
-            <a href="{{ route('dashboard.orders') }}" class="{{ request()->routeIs('dashboard.orders') ? 'active' : '' }}">Order</a>
+            <a href="{{ route('dashboard.orders.index') }}" class="{{ request()->routeIs('dashboard.orders') ? 'active' : '' }}">Order</a>
             <a href="{{ route('dashboard.categories') }}" class="{{ request()->routeIs('dashboard.categories*') ? 'active' : '' }}">Kategori (contoh CRUD)</a>
         </nav>
     </aside>
