@@ -108,4 +108,46 @@ class OrderController extends Controller
             ], 500);
         }
     }
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|in:pending,Diproses,Dikirim,Selesai,Dibatalkan',
+        ]);
+
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order tidak ditemukan.'
+            ], 404);
+        }
+
+        $order->status = $validated['status'];
+        $order->save();
+
+        return response()->json([
+            'message' => 'Status order berhasil diperbarui.',
+            'data' => $order
+        ], 200);
+    }
+    public function destroy($id)
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order tidak ditemukan.'
+            ], 404);
+        }
+
+        if (method_exists($order, 'orderItems')) {
+            $order->orderItems()->delete();
+        }
+
+        $order->delete();
+
+        return response()->json([
+            'message' => 'Order berhasil dihapus.'
+        ], 200);
+    }
 }
