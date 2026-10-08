@@ -10,6 +10,33 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function index(Request $request)
+    {
+        $orders = Order::where('user_id', $request->user()->id)
+        ->with(['orderItems.product'])
+        ->latest()
+        ->get();
+        return response()->json([
+            'message' => 'Berhasil mengambil daftar order.',
+            'data' => $orders
+        ], 200);
+    }
+    public function show(Request $request, $id)
+    {
+        $order = Order::where('user_id', $request->user()->id)
+        ->where('id', $id)
+        ->with(['orderItems.product'])
+        ->first();
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order tidak ditemukan.'
+            ], 404);
+        }
+        return response()->json([
+            'message' => 'Berhasil mengambil detail order.',
+            'data' => $order
+        ], 200);
+    }
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,7 +58,7 @@ class OrderController extends Controller
                     if (!$product) {
                         return response()->json([
                             'message' => 'Produk tidak ditemukan.'
-                        ], 440);
+                        ], 404);
                     }
                     if ($product->stock < $item ['qty']) {
                         return response()->json([
@@ -49,6 +76,15 @@ class OrderController extends Controller
                     ];
                 }
                 $totalPrice = $subtotal + $shippingFee;
+                $user = $request->user();
+                if ($validated['payment_method'] === 'saldo') {
+                    if ($user->saldo < $totalPrice) {
+                        return response()->json([
+                            'message' => "Saldo tidak mencukupi. Saldo anda: Rp{$user->saldo}, Total: Rp{$totalPrice}"
+                        ], 400);
+                    }
+                    $user->decrement('saldo', $totalPrice);
+                }
                 $order = Order::create([
                     'user_id' => $request->user()->id,
                     'address' => $validated['address'],
@@ -63,7 +99,7 @@ class OrderController extends Controller
                 }
                 return response()->json([
                     'message' => 'Order berhasil dibuat.',
-                    'data' => $order->load('orderItems')
+                    'data' => $order->load('orderItems.product')
                 ], 201);
             });
         } catch (\Exception $e) {

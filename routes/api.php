@@ -35,12 +35,10 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
-    Route::post('/orders', [OrderController::class, 'store']);
-});
-
 // Order — FE checkout: src/features/checkout/services/checkoutApi.js
 
 
-Route::get('/orders', function () {
-    return 'TODO: list order user login';
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{id}', [OrderController::class, 'show']);
+Route::post('/orders', [OrderController::class, 'store']);
 });
