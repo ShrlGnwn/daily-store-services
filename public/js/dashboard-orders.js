@@ -1,3 +1,5 @@
+(function () {
+
 $(document).ready(function() {
     const $page =$('#orders-page');
     const dataUrl = $page.data('data-url');
@@ -44,3 +46,4 @@ $(document).ready(function() {
         }
     });
 });
+})();
